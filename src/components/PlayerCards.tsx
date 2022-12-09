@@ -11,16 +11,26 @@ type PlayerSlugsParams = Readonly<Partial<playerSlugsType>>;
 
 const fetchPlayerData = async (
   query: string,
-  setPlayerData: React.Dispatch<React.SetStateAction<PlayerData[] | undefined>>
+  setPlayerData: React.Dispatch<React.SetStateAction<PlayerData[] | undefined>>,
 ) => {
-  console.log('query', query)
-  const playerDataRes = await fetch("http://localhost:8080/graphql/marco-verratti-2021-unique-");
+  console.log("query", query);
+  const playerDataRes = await fetch(
+    "http://localhost:8080/graphql/marco-verratti-2021-unique-"
+  );
 
   console.log("player data return:\n", playerDataRes);
   const newPlayerData: PlayerData[] = [];
 
   setPlayerData(newPlayerData);
 };
+
+const client = new ApolloClient({
+  uri: "https://api.sorare.com/graphql/",
+  cache: new InMemoryCache(),
+});
+
+/** View and list component for displaying player cards
+ */
 const PlayerCards: React.FC = () => {
   // hooks
   const { playerSlugs: playerSlugsStr }: PlayerSlugsParams =
