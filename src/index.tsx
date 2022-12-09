@@ -1,6 +1,9 @@
 // react
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+// mui
+import { ThemeProvider } from "@mui/material";
+import { baseTheme } from "./mui/baseTheme";
 // components
 import App from "./App";
 // style
@@ -12,9 +15,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   // <React.StrictMode>
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  <ThemeProvider theme={baseTheme}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </ThemeProvider>
   // </React.StrictMode>
 );
 
