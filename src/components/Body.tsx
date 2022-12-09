@@ -3,8 +3,8 @@ import { Outlet, Route, Routes } from "react-router-dom";
 // mui
 import { Box, Container, useTheme } from "@mui/material";
 // components
-import NotFound from "./NotFound";
 import PlayerCards from "./PlayerCards";
+import NotFound from "./NotFound";
 
 /** The default layout for the page. To be applied to all routes.
  */
