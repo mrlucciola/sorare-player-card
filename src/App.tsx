@@ -1,23 +1,30 @@
 // components
 import Nav from "./components/Nav";
 import Body from "./components/Body";
+// mui
+import { Container, Grid } from "@mui/material";
 
 /** Top level component
  */
 const App = () => {
   return (
-    <div
+    <Grid
       className="App"
-      style={{
-        width: "100vw",
+      container
+      direction="column"
+      component={Container}
+      sx={{
         height: "100vh",
-        display: "flex",
-        flexFlow: "column",
+        minHeight: "100vh",
+        maxHeight: "100vh",
+        width: "100vw",
+        maxWidth: "100vw",
+        minWidth: "100vw",
       }}
     >
       <Nav />
       <Body />
-    </div>
+    </Grid>
   );
 };
 
