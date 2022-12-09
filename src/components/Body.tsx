@@ -1,7 +1,8 @@
 // react
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Outlet, Params, Route, Routes, useParams } from "react-router-dom";
 // components
 import NotFound from "./NotFound";
+import PlayerCards from "./PlayerCards";
 
 /** The default layout for the page. To be applied to all routes.
  */
@@ -25,8 +26,6 @@ const PageLayout: React.FC = () => {
     </div>
   );
 };
-
-const PlayerCards = () => <div>Player Cards</div>;
 
 /** Body: Display Component with React Router
  *

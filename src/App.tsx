@@ -6,7 +6,15 @@ import Body from "./components/Body";
  */
 const App = () => {
   return (
-    <div className="App">
+    <div
+      className="App"
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        flexFlow: "column",
+      }}
+    >
       <Nav />
       <Body />
     </div>
