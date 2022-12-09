@@ -1,9 +1,6 @@
-type Props = React.FC<{}>;
-
-/**
- * Navigation bar
+/** Displays the 'Not Found' component & message
  */
-const NotFound: Props = () => {
+const NotFound: React.FC = () => {
   return <div>Not Found</div>;
 };
 

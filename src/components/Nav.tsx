@@ -1,10 +1,9 @@
 // mui
 import { Grid } from "@mui/material";
 
-type Props = React.FC<{}>;
 /** Navigation bar
  */
-const Nav: Props = () => {
+const Nav: React.FC = () => {
   return (
     <Grid container direction="row" flex="0 1" justifyContent="space-between">
       <div style={{ display: "flex" }}>Sorare</div>
