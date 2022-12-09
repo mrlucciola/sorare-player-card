@@ -80,5 +80,6 @@
     ],
     "exec": "npm start:server",
     "ext": "ts"
-  }
+  },
+  "proxy": "http://localhost:8080"
 }

@@ -13,7 +13,8 @@ const fetchPlayerData = async (
   query: string,
   setPlayerData: React.Dispatch<React.SetStateAction<PlayerData[] | undefined>>
 ) => {
-  const playerDataRes = await fetch(query);
+  console.log('query', query)
+  const playerDataRes = await fetch("http://localhost:8080/graphql/marco-verratti-2021-unique-");
 
   console.log("player data return:\n", playerDataRes);
   const newPlayerData: PlayerData[] = [];
@@ -53,7 +54,7 @@ const PlayerCards: React.FC = () => {
 
     // cleanup
     return () => setPlayerData([]);
-  });
+  }, []);
   return <Grid>{playerCardArr}</Grid>;
 };
 
