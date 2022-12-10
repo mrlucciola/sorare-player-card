@@ -37,10 +37,20 @@ type Props = React.FC<{
   lastName: string;
   position: string;
   country: { name: string; flagUrl: string };
+  isImgLoading: boolean;
+  isHidden: boolean;
 }>;
 /** Bottom portion of the player card
  */
-const CardBottom: Props = ({ age, firstName, lastName, position, country }) => {
+const CardBottom: Props = ({
+  age,
+  firstName,
+  lastName,
+  position,
+  country,
+  isImgLoading,
+  isHidden,
+}) => {
   const countryUrl = country.flagUrl;
 
   return (

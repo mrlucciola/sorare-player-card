@@ -6,9 +6,12 @@ import {
   Box,
   Skeleton,
   Fade,
+  Collapse,
+  Button,
+  Container,
 } from "@mui/material";
 import { GridProps } from "@mui/system/Unstable_Grid";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // cpmponents
 import CardBottom from "./CardBottom";
 import CardTop from "./CardTop";
@@ -58,11 +61,14 @@ const PlayerCard: Props = ({
   },
 }) => {
   const [isImgLoading, setIsImgLoading] = useState<boolean>(true);
-  const width = 200;
+  const [isHidden, setIsHidden] = useState<boolean>(true);
   const aspectRatio = 1.62;
+  const width = 200;
   const height = width * aspectRatio;
 
   useEffect(() => {
+    // @ts-ignore
+    // imgRef.current.src = pictureUrl;
     const imgElem = new Image();
     imgElem.onload = () => {
       setIsImgLoading(false);
@@ -71,33 +77,37 @@ const PlayerCard: Props = ({
   }, []);
 
   return (
-    <Card
-      display="grid"
-      gridTemplateRows="20% auto 45%"
+    // <>
+    <Box
       sx={{
         width,
         minWidth: width,
         maxWidth: width,
         height: height,
-        background:
-          "linear-gradient(to bottom, rgba(194, 242, 242, 1) 14%, #ffffff 49%)",
       }}
-      component={Box}
-      raised
     >
-      <Fade in={isImgLoading}>
-        <Skeleton
-          variant="rectangular"
-          sx={{
-            minWidth: width,
-            width,
-            maxWidth: width,
-            height,
-            position: "absolute",
-          }}
-        ></Skeleton>
-      </Fade>
-      <Fade in={!isImgLoading}>
+      <Card
+        position="absolute"
+        display="grid"
+        gridTemplateRows="20% auto 45%"
+        sx={{
+          width,
+          minWidth: width,
+          maxWidth: width,
+          height: height,
+          // top: 0,
+          // left: 0,
+          background:
+            "linear-gradient(to bottom, rgba(194, 242, 242, 1) 14%, #ffffff 49%)",
+        }}
+        component={Box}
+        raised
+      >
+        {/* {isImgLoading || isHidden ? (
+        HiddenCard(width, height, setIsHidden)
+      ) : (
+        <Fade in={!isImgLoading && !isHidden} timeout={1000}></Fade>
+      )} */}
         <img
           style={{
             marginTop: "20%",
@@ -110,24 +120,66 @@ const PlayerCard: Props = ({
           src={pictureUrl}
           loading="lazy"
         />
-      </Fade>
-      {/* top */}
-      <CardTop
-        season={season}
-        displayRarity={displayRarity}
-        teamImgUrl={activeClub.pictureUrl}
-        shirtNumber={shirtNumber}
-      />
-      {/* bottom */}
-      <CardBottom
-        age={age}
-        firstName={firstName}
-        lastName={lastName}
-        position={position}
-        country={country}
-      />
-    </Card>
+        <CardTop
+          season={season}
+          displayRarity={displayRarity}
+          teamImgUrl={activeClub.pictureUrl}
+          shirtNumber={shirtNumber}
+          isImgLoading={isImgLoading}
+          isHidden={isHidden}
+        />
+        <CardBottom
+          age={age}
+          firstName={firstName}
+          lastName={lastName}
+          position={position}
+          country={country}
+          isImgLoading={isImgLoading}
+          isHidden={isHidden}
+        />
+      </Card>
+      {true && (
+        <Fade
+          in={isHidden}
+          exit={!isHidden}
+          timeout={{ appear: 0, enter: 0, exit: 1000 }}
+        >
+          {HiddenCard(width, height, setIsHidden)}
+        </Fade>
+      )}
+    </Box>
   );
 };
 
 export default PlayerCard;
+
+function HiddenCard(width: number, height: number, setIsHidden: any) {
+  return (
+    <Button
+      sx={{
+        minWidth: width,
+        width,
+        maxWidth: width,
+        height,
+        position: "absolute",
+        zIndex: 1000,
+        color: "black",
+      }}
+      onClick={() => setIsHidden(false)}
+    >
+      <Skeleton
+        variant="rectangular"
+        sx={{
+          bgcolor: "lightblue",
+          minWidth: width,
+          width,
+          maxWidth: width,
+          height,
+        }}
+        animation="wave"
+      >
+        Click to Reveal Player Card
+      </Skeleton>
+    </Button>
+  );
+}

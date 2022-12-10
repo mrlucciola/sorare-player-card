@@ -5,6 +5,7 @@ import {
   Stack,
   Unstable_Grid2 as Grid,
   Divider,
+  Fade,
 } from "@mui/material";
 // components
 import { TG } from ".";
@@ -26,10 +27,19 @@ type Props = React.FC<{
   displayRarity: string;
   teamImgUrl: string;
   shirtNumber: number;
+  isImgLoading: boolean;
+  isHidden: boolean;
 }>;
 /** Top portion of the player card.
  */
-const CardTop: Props = ({ season, displayRarity, teamImgUrl, shirtNumber }) => {
+const CardTop: Props = ({
+  season,
+  displayRarity,
+  teamImgUrl,
+  shirtNumber,
+  isImgLoading,
+  isHidden,
+}) => {
   const seasonFmt = season;
   const rarityColor = rarityColorMap.get(displayRarity.toLowerCase());
 
@@ -45,6 +55,8 @@ const CardTop: Props = ({ season, displayRarity, teamImgUrl, shirtNumber }) => {
       textOverflow="clip"
       whiteSpace="nowrap"
     >
+      {/* <Fade in={!isImgLoading && !isHidden}> */}
+      {/* <div> */}
       <Stack
         gridColumn={1}
         justifyContent="start"
@@ -73,7 +85,7 @@ const CardTop: Props = ({ season, displayRarity, teamImgUrl, shirtNumber }) => {
           component={Avatar}
           src={teamImgUrl}
           sx={{ width: "35px", height: "35px" }}
-        ></Grid>
+        />
         <TG
           padding={1}
           color="rgba(128,128,128,0.5)"
@@ -86,6 +98,8 @@ const CardTop: Props = ({ season, displayRarity, teamImgUrl, shirtNumber }) => {
           #{shirtNumber}
         </TG>
       </Stack>
+      {/* </div> */}
+      {/* </Fade> */}
     </Box>
   );
 };
