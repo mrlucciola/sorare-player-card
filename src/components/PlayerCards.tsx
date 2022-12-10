@@ -1,5 +1,4 @@
 // react
-import { useState } from "react";
 import { useParams } from "react-router-dom";
 // graphql
 import { useQuery, gql, QueryResult, OperationVariables } from "@apollo/client";
@@ -15,6 +14,10 @@ const buildPlayersQuery = () => {
       cards(slugs: $slugs) {
         name
         player {
+          displayName
+          firstName
+          lastName
+          pictureUrl
           activeClub {
             name
             pictureUrl
@@ -24,7 +27,6 @@ const buildPlayersQuery = () => {
             flagUrl
           }
         }
-        pictureUrl
         displayRarity
         shirtNumber
         age
@@ -50,8 +52,6 @@ const PlayerCards: React.FC = () => {
   // hooks
   const { playerSlugs: playerSlugsStr }: PlayerSlugsParams =
     useParams<playerSlugsType>();
-  // state
-  // const [playerDataArr, setPlayerData] = useState<PlayerData[]>();
 
   // Validate
   if (!playerSlugsStr) throw "Query param is undefined";
@@ -72,25 +72,12 @@ const PlayerCards: React.FC = () => {
       },
     });
   const playerDataArr: PlayerData[] | undefined = data?.cards;
-  // asdf.data?.cards;
-  // const {
-  //   loading,
-  //   data,
-  //   error,
-  // }: QueryResult<PlayerDataPayload, { slugs: string[] }> = useQuery<PlayerDataPayload>(query, {
-  //   variables: {
-  //     slugs: playerSlugsArr,
-  //   },
-  // });
 
   if (error) {
     console.error("error", error);
   }
 
   // build list of player cards
-  // const buildPlayerCardArr = (): React.FC<PlayerData>[] => {
-  //   return [];
-  // };
   const playerCardArr = playerDataArr?.map((playerData: PlayerData, idx) => {
     return <PlayerCard playerData={playerData} key={idx} />;
   });
