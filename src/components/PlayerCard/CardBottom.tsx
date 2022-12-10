@@ -54,6 +54,7 @@ const CardBottom: Props = ({ age, firstName, lastName, position, country }) => {
           "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(50,50,50,1) 32%)",
       }}
       color="white"
+      zIndex={100}
     >
       <Grid height="20px"></Grid>
       <Grid

@@ -1,6 +1,14 @@
 // mui
-import { Unstable_Grid2 as Grid, Typography, Card, Box } from "@mui/material";
+import {
+  Unstable_Grid2 as Grid,
+  Typography,
+  Card,
+  Box,
+  Skeleton,
+  Fade,
+} from "@mui/material";
 import { GridProps } from "@mui/system/Unstable_Grid";
+import { useEffect, useState } from "react";
 // cpmponents
 import CardBottom from "./CardBottom";
 import CardTop from "./CardTop";
@@ -49,31 +57,60 @@ const PlayerCard: Props = ({
     position,
   },
 }) => {
+  const [isImgLoading, setIsImgLoading] = useState<boolean>(true);
+  const width = 200;
+  const aspectRatio = 1.62;
+  const height = width * aspectRatio;
+
+  useEffect(() => {
+    const imgElem = new Image();
+    imgElem.onload = () => {
+      setIsImgLoading(false);
+    };
+    imgElem.src = pictureUrl;
+  }, []);
+
   return (
     <Card
       display="grid"
       gridTemplateRows="20% auto 45%"
       sx={{
-        width: 200,
-        minWidth: 200,
-        maxWidth: 200,
-        height: 324,
+        width,
+        minWidth: width,
+        maxWidth: width,
+        height: height,
         background:
           "linear-gradient(to bottom, rgba(194, 242, 242, 1) 14%, #ffffff 49%)",
       }}
       component={Box}
       raised
     >
-      <img
-        style={{
-          marginTop: "20%",
-          minWidth: "120%",
-          maxWidth: "120%",
-          width: "120%",
-          justifySelf: "center",
-        }}
-        src={pictureUrl}
-      />
+      <Fade in={isImgLoading}>
+        <Skeleton
+          variant="rectangular"
+          sx={{
+            minWidth: width,
+            width,
+            maxWidth: width,
+            height,
+            position: "absolute",
+          }}
+        ></Skeleton>
+      </Fade>
+      <Fade in={!isImgLoading}>
+        <img
+          style={{
+            marginTop: "20%",
+            minWidth: "120%",
+            maxWidth: "120%",
+            width: "120%",
+            justifySelf: "center",
+            zIndex: 0,
+          }}
+          src={pictureUrl}
+          loading="lazy"
+        />
+      </Fade>
       {/* top */}
       <CardTop
         season={season}
