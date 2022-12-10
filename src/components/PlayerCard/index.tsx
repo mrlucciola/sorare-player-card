@@ -1,5 +1,11 @@
 // mui
-import { Unstable_Grid2 as Grid, Typography, Card, Box } from "@mui/material";
+import {
+  Unstable_Grid2 as Grid,
+  Typography,
+  Card,
+  Box,
+  Skeleton,
+} from "@mui/material";
 import { GridProps } from "@mui/system/Unstable_Grid";
 // cpmponents
 import CardBottom from "./CardBottom";
@@ -36,7 +42,7 @@ export interface PlayerData {
   position: string;
 }
 
-type Props = React.FC<{ playerData: PlayerData }>;
+type Props = React.FC<{ playerData: PlayerData, isLoading: boolean }>;
 /** Displays the information for a single player.
  */
 const PlayerCard: Props = ({
@@ -48,32 +54,45 @@ const PlayerCard: Props = ({
     age,
     position,
   },
+  isLoading
 }) => {
+  const width = 200;
+  const aspectRatio = 1.62;
+  const height = width * aspectRatio;
+
   return (
     <Card
       display="grid"
       gridTemplateRows="20% auto 45%"
       sx={{
-        width: 200,
-        minWidth: 200,
-        maxWidth: 200,
-        height: 324,
+        width,
+        minWidth: width,
+        maxWidth: width,
+        height: height,
         background:
           "linear-gradient(to bottom, rgba(194, 242, 242, 1) 14%, #ffffff 49%)",
       }}
       component={Box}
       raised
     >
-      <img
-        style={{
-          marginTop: "20%",
-          minWidth: "120%",
-          maxWidth: "120%",
-          width: "120%",
-          justifySelf: "center",
-        }}
-        src={pictureUrl}
-      />
+      {isLoading ? (
+        <Skeleton
+          variant="rectangular"
+          sx={{ minWidth: width, width, maxWidth: width, height, zIndex: 100 }}
+        />
+      ) : (
+        <img
+          style={{
+            marginTop: "20%",
+            minWidth: "120%",
+            maxWidth: "120%",
+            width: "120%",
+            justifySelf: "center",
+          }}
+          src={pictureUrl}
+          loading="lazy"
+        />
+      )}
       {/* top */}
       <CardTop
         season={season}
