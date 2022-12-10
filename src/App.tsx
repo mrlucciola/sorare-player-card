@@ -2,17 +2,16 @@
 import Nav from "./components/Nav";
 import Body from "./components/Body";
 // mui
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, Stack } from "@mui/material";
 
 /** Top level component
  */
 const App = () => {
   return (
-    <Grid
+    <Stack
       className="App"
-      container
-      direction="column"
       component={Container}
+      direction="column"
       sx={{
         height: "100vh",
         minHeight: "100vh",
@@ -24,7 +23,7 @@ const App = () => {
     >
       <Nav />
       <Body />
-    </Grid>
+    </Stack>
   );
 };
 

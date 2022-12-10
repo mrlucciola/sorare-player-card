@@ -1,7 +1,35 @@
 // mui
-import { Avatar, Divider, Stack, Unstable_Grid2 as Grid } from "@mui/material";
+import {
+  Avatar,
+  Divider,
+  Stack,
+  StackProps,
+  Unstable_Grid2 as Grid,
+} from "@mui/material";
+import React from "react";
 // components
 import { TG } from ".";
+
+const BottomRowItem: React.FC<
+  StackProps & { component?: React.ElementType; title: string }
+> = ({ title, ...p }) => (
+  <Stack
+    direction="column"
+    alignItems="center"
+    fontSize="0.8em"
+    gap="2px"
+    padding="3px"
+    {...p}
+  >
+    <TG sx={{ fontSize: "0.7em" }}>{title}</TG>
+    <Divider
+      sx={{ backgroundColor: "rgba(220,220,220,.2)" }}
+      flexItem
+      orientation="horizontal"
+    />
+    {p.children}
+  </Stack>
+);
 
 type Props = React.FC<{
   age: number;
@@ -14,98 +42,53 @@ type Props = React.FC<{
  */
 const CardBottom: Props = ({ age, firstName, lastName, position, country }) => {
   const countryUrl = country.flagUrl;
-  const titleStyle = {
-    fontSize: "0.7em",
-  };
 
   return (
     <Stack
       gridRow="-2"
       direction="column"
+      justifyContent="center"
+      alignItems="center"
       sx={{
         background:
           "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(50,50,50,1) 32%)",
       }}
-      padding="5px"
       color="white"
-      justifyContent="center"
-      alignItems="center"
     >
       <Grid height="20px"></Grid>
       <Grid
         direction="column"
+        textAlign="center"
         color="white"
-        justifyContent="center"
-        alignItems="center"
         fontSize="1.5em"
         fontWeight={600}
-        textAlign="center"
-        width="100%"
-        alignSelf="center"
       >
         <TG>{firstName}</TG>
         <TG>{lastName}</TG>
       </Grid>
       {/* lower 2/3 */}
-      <Stack direction="row">
-        <Stack
-          direction="column"
-          alignItems="center"
-          fontSize="0.8em"
-          gap="2px"
-          padding="3px"
-        >
-          <TG sx={titleStyle}>Age</TG>
+      <Stack
+        direction="row"
+        divider={
           <Divider
-            sx={{ backgroundColor: "rgba(220,220,220,.2)" }}
+            sx={{ backgroundColor: "rgba(220,220,220,.2)", margin: "2px" }}
             flexItem
-            // variant="middle"
-            orientation="horizontal"
+            orientation="vertical"
+            variant="middle"
           />
+        }
+      >
+        <BottomRowItem title="Age">
           <TG>{age}</TG>
-        </Stack>
-
-        <Divider
-          sx={{ backgroundColor: "rgba(220,220,220,.2)" }}
-          flexItem
-          orientation="vertical"
-        />
-
-        <Stack
-          gridArea="-2 / 2"
-          flexDirection="column"
-          alignItems="center"
-          fontSize="0.8em"
-          gap="2px"
-          padding="3px"
-        >
-          <TG sx={titleStyle}>Position</TG>
-          <Divider
-            sx={{ backgroundColor: "rgba(220,220,220,.2)" }}
-            flexItem
-            // variant="middle"
-            orientation="horizontal"
-          />
+        </BottomRowItem>
+        <BottomRowItem title="Position">
           <TG>{position}</TG>
-        </Stack>
-        <Divider
-          sx={{ backgroundColor: "rgba(220,220,220,.2)" }}
-          flexItem
-          orientation="vertical"
-        />
-        <Stack
-          gridArea="-2 / 3"
-          flexDirection="column"
-          alignItems="center"
-          fontSize="0.8em"
-          gap="2px"
-          padding="3px"
-        >
-          <TG sx={titleStyle}>Country</TG>
+        </BottomRowItem>
+        <BottomRowItem title="Country">
           <Grid component={Avatar} src={countryUrl} width="24px" height="24px">
             {country.name}
           </Grid>
-        </Stack>
+        </BottomRowItem>
       </Stack>
     </Stack>
   );

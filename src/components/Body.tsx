@@ -1,7 +1,7 @@
 // react
 import { Outlet, Route, Routes } from "react-router-dom";
 // mui
-import { Box, Container, useTheme } from "@mui/material";
+import { Container, Stack, useTheme } from "@mui/material";
 // components
 import PlayerCards from "./PlayerCards";
 import NotFound from "./NotFound";
@@ -13,14 +13,14 @@ const PageLayout: React.FC = () => {
   const theme = useTheme();
 
   return (
-    <Box
+    <Stack
       flexDirection="column"
+      alignItems="center"
+      justifyContent="end"
       sx={{
         flex: 1,
         overflow: "scroll",
-        alignItems: "center",
-        display: "flex",
-        flexFlow: "column",
+        maxWidth: "100%",
         "& > div": {
           height: "100%",
           minHeight: "100%",
@@ -31,7 +31,7 @@ const PageLayout: React.FC = () => {
       }}
     >
       <Outlet />
-    </Box>
+    </Stack>
   );
 };
 
@@ -42,7 +42,7 @@ const PageLayout: React.FC = () => {
  */
 const Body: React.FC = () => {
   return (
-    <Container>
+    <Stack flexDirection="column">
       <Routes>
         <Route path="/" element={<PageLayout />}>
           {/* <Route index element={<SampleIndexComponent />} /> */}
@@ -50,7 +50,7 @@ const Body: React.FC = () => {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
-    </Container>
+    </Stack>
   );
 };
 export default Body;
