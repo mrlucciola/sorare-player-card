@@ -13,7 +13,7 @@ import "./index.css";
 // import reportWebVitals from "./reportWebVitals";
 
 const client = new ApolloClient({
-  uri: "https://api.sorare.com/graphql/",
+  uri: "http://localhost:8080/graphql",
   cache: new InMemoryCache(),
 });
 

@@ -1,34 +1,49 @@
 // react
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+// graphql
+import { useQuery, gql, QueryResult, OperationVariables } from "@apollo/client";
 // mui
 import { Grid } from "@mui/material";
 // components
 import PlayerCard, { PlayerData } from "./PlayerCard";
 
-type playerSlugsType = { playerSlugs: string };
-type PlayerSlugsParams = Readonly<Partial<playerSlugsType>>;
-
-const fetchPlayerData = async (
-  query: string,
-  setPlayerData: React.Dispatch<React.SetStateAction<PlayerData[] | undefined>>,
-) => {
-  console.log("query", query);
-  const playerDataRes = await fetch(
-    "http://localhost:8080/graphql/marco-verratti-2021-unique-"
-  );
-
-  console.log("player data return:\n", playerDataRes);
-  const newPlayerData: PlayerData[] = [];
-
-  setPlayerData(newPlayerData);
+// fxns
+const buildPlayersQuery = () => {
+  return gql`
+    query Playersx($slugs: [String!]) {
+      cards(slugs: $slugs) {
+        name
+        player {
+          activeClub {
+            name
+            pictureUrl
+          }
+          country {
+            code
+            flagUrl
+          }
+        }
+        pictureUrl
+        displayRarity
+        shirtNumber
+        age
+        position
+        season {
+          id
+          startYear
+          name
+        }
+      }
+    }
+  `;
 };
 
-const client = new ApolloClient({
-  uri: "https://api.sorare.com/graphql/",
-  cache: new InMemoryCache(),
-});
-
+interface PlayerDataPayload {
+  cards: PlayerData[];
+}
+type playerSlugsType = { playerSlugs: string };
+type PlayerSlugsParams = Readonly<Partial<playerSlugsType>>;
 /** View and list component for displaying player cards
  */
 const PlayerCards: React.FC = () => {
@@ -36,36 +51,51 @@ const PlayerCards: React.FC = () => {
   const { playerSlugs: playerSlugsStr }: PlayerSlugsParams =
     useParams<playerSlugsType>();
   // state
-  const [playerDataArr, setPlayerData] = useState<PlayerData[]>();
+  // const [playerDataArr, setPlayerData] = useState<PlayerData[]>();
 
   // Validate
   if (!playerSlugsStr) throw "Query param is undefined";
 
   // build query
-  const playerSlugs: string[] = playerSlugsStr.split(",");
-  const playersJoinedStr = playerSlugs.map((slug) => {}).join();
-  const playerCardsQuery = `${playersJoinedStr}`;
-  // PlayerData[]
-  console.log("playerSlugs: ", playerSlugs);
-  console.log("playersJoinedStr: ", playersJoinedStr);
-  console.log("playerCardsQuery: ", playerCardsQuery);
+  const playerSlugsArr: string[] = playerSlugsStr.split(",");
+
+  const query: any = buildPlayersQuery();
+
+  const {
+    data,
+    error,
+    loading,
+  }: QueryResult<PlayerDataPayload, OperationVariables> =
+    useQuery<PlayerDataPayload>(query, {
+      variables: {
+        slugs: playerSlugsArr,
+      },
+    });
+  const playerDataArr: PlayerData[] | undefined = data?.cards;
+  // asdf.data?.cards;
+  // const {
+  //   loading,
+  //   data,
+  //   error,
+  // }: QueryResult<PlayerDataPayload, { slugs: string[] }> = useQuery<PlayerDataPayload>(query, {
+  //   variables: {
+  //     slugs: playerSlugsArr,
+  //   },
+  // });
+
+  if (error) {
+    console.error("error", error);
+  }
 
   // build list of player cards
-  const buildPlayerCardArr = (): React.FC<PlayerData>[] => {
-    return [];
-  };
+  // const buildPlayerCardArr = (): React.FC<PlayerData>[] => {
+  //   return [];
+  // };
   const playerCardArr = playerDataArr?.map((playerData: PlayerData, idx) => {
-    return <PlayerCard playerData={playerData} />;
+    return <PlayerCard playerData={playerData} key={idx} />;
   });
 
-  useEffect(() => {
-    // retrieve player info from the query in the search box
-    fetchPlayerData(playerCardsQuery, setPlayerData);
-
-    // cleanup
-    return () => setPlayerData([]);
-  }, []);
-  return <Grid>{playerCardArr}</Grid>;
+  return <Grid>{!loading && playerCardArr}</Grid>;
 };
 
 export default PlayerCards;

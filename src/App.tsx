@@ -1,8 +1,6 @@
 // components
 import Nav from "./components/Nav";
 import Body from "./components/Body";
-// apollo
-import { ApolloClient } from "@apollo/client";
 // mui
 import { Container, Grid } from "@mui/material";
 
