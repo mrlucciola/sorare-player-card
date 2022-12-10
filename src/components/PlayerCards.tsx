@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 // graphql
 import { useQuery, gql, QueryResult, OperationVariables } from "@apollo/client";
 // mui
-import { Grid } from "@mui/material";
+import { Container, Paper, Stack, Unstable_Grid2 as Grid } from "@mui/material";
 // components
 import PlayerCard, { PlayerData } from "./PlayerCard";
 
@@ -61,11 +61,7 @@ const PlayerCards: React.FC = () => {
 
   const query: any = buildPlayersQuery();
 
-  const {
-    data,
-    error,
-    loading,
-  }: QueryResult<PlayerDataPayload, OperationVariables> =
+  const { data, error }: QueryResult<PlayerDataPayload, OperationVariables> =
     useQuery<PlayerDataPayload>(query, {
       variables: {
         slugs: playerSlugsArr,
@@ -82,7 +78,13 @@ const PlayerCards: React.FC = () => {
     return <PlayerCard playerData={playerData} key={idx} />;
   });
 
-  return <Grid>{!loading && playerCardArr}</Grid>;
+  return (
+    <Paper component={Container}>
+      <Stack direction="row" rowGap="10px" columnGap="10px" flexWrap="wrap">
+        {playerCardArr}
+      </Stack>
+    </Paper>
+  );
 };
 
 export default PlayerCards;

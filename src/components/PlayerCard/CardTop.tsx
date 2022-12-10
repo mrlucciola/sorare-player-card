@@ -10,14 +10,14 @@ import {
 import { TG } from ".";
 
 const rarityColorMapObj = {
-  unique: "gold",
-  super_rare: "purple",
-  rare: "red",
-  limited: "yellow",
-  common: "green",
-  custom_series: "black",
+  unique: { text: "gold", border: "gold" },
+  super_rare: { text: "purple", border: "purple" },
+  rare: { text: "rgb(255, 231, 231)", border: "red" },
+  limited: { text: "yellow", border: "yellow" },
+  common: { text: "green", border: "green" },
+  custom_series: { text: "black", border: "black" },
 };
-const rarityColorMap = new Map<string, string>(
+const rarityColorMap = new Map<string, { text: string; border: string }>(
   Object.entries(rarityColorMapObj)
 );
 
@@ -31,7 +31,6 @@ type Props = React.FC<{
  */
 const CardTop: Props = ({ season, displayRarity, teamImgUrl, shirtNumber }) => {
   const seasonFmt = season;
-  console.log("displayaraity", displayRarity.toLowerCase(), rarityColorMap);
   const rarityColor = rarityColorMap.get(displayRarity.toLowerCase());
 
   return (
@@ -39,13 +38,12 @@ const CardTop: Props = ({ season, displayRarity, teamImgUrl, shirtNumber }) => {
       gridRow="1"
       display="grid"
       gridTemplateColumns="auto 1fr 1fr"
+      position="absolute"
+      paddingTop="3px"
       width="inherit"
       maxWidth="inherit"
       textOverflow="clip"
-      overflow="clip"
       whiteSpace="nowrap"
-      paddingTop="3px"
-      position="absolute"
     >
       <Stack
         gridColumn={1}
@@ -53,7 +51,7 @@ const CardTop: Props = ({ season, displayRarity, teamImgUrl, shirtNumber }) => {
         alignItems="center"
         fontSize="0.7em"
         padding=".5em"
-        color={rarityColor}
+        color={rarityColor?.text}
       >
         <Stack
           sx={{
@@ -61,13 +59,12 @@ const CardTop: Props = ({ season, displayRarity, teamImgUrl, shirtNumber }) => {
             shadow: "0 0 50px 50px rgba(0,0,0,1)",
             borderRadius: "5px",
             padding: "5px",
-            // text
-            border: `4px solid ${rarityColor}`,
+            border: `4px solid ${rarityColor?.border}`,
           }}
           alignItems="center"
         >
           <TG>{seasonFmt}</TG>
-          <Divider flexItem sx={{ background: rarityColor }} />
+          <Divider flexItem sx={{ background: rarityColor?.border }} />
           <TG fontWeight={700}>{displayRarity}</TG>
         </Stack>
       </Stack>

@@ -1,11 +1,5 @@
 // mui
-import {
-  Unstable_Grid2 as Grid,
-  Typography,
-  Card,
-  Box,
-  CardMedia,
-} from "@mui/material";
+import { Unstable_Grid2 as Grid, Typography, Card, Box } from "@mui/material";
 import { GridProps } from "@mui/system/Unstable_Grid";
 // cpmponents
 import CardBottom from "./CardBottom";
@@ -38,7 +32,6 @@ export interface PlayerData {
   };
   shirtNumber: number;
 
-  // lower 1/3
   age: number;
   position: string;
 }
@@ -56,28 +49,30 @@ const PlayerCard: Props = ({
     position,
   },
 }) => {
-  // separate the name out
-
   return (
     <Card
       display="grid"
-      // padding={1}
       gridTemplateRows="20% auto 45%"
       sx={{
         width: 200,
+        minWidth: 200,
+        maxWidth: 200,
         height: 324,
         background:
           "linear-gradient(to bottom, rgba(194, 242, 242, 1) 14%, #ffffff 49%)",
       }}
       component={Box}
-      // sx={{background:}}
       raised
     >
-      <CardMedia
-        component="img"
-        alt={`${firstName} ${lastName}`}
-        image={pictureUrl}
-        sx={{ marginTop: "20%", minWidth: "120%", justifySelf: "center" }}
+      <img
+        style={{
+          marginTop: "20%",
+          minWidth: "120%",
+          maxWidth: "120%",
+          width: "120%",
+          justifySelf: "center",
+        }}
+        src={pictureUrl}
       />
       {/* top */}
       <CardTop
