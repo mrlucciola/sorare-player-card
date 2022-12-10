@@ -61,7 +61,7 @@ const PlayerCards: React.FC = () => {
 
   const query: any = buildPlayersQuery();
 
-  const { data, error, loading }: QueryResult<PlayerDataPayload, OperationVariables> =
+  const { data, error }: QueryResult<PlayerDataPayload, OperationVariables> =
     useQuery<PlayerDataPayload>(query, {
       variables: {
         slugs: playerSlugsArr,
@@ -75,7 +75,7 @@ const PlayerCards: React.FC = () => {
 
   // build list of player cards
   const playerCardArr = playerDataArr?.map((playerData: PlayerData, idx) => {
-    return <PlayerCard playerData={playerData} isLoading={loading} key={idx} />;
+    return <PlayerCard playerData={playerData} key={idx} />;
   });
 
   return (

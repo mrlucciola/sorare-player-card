@@ -5,8 +5,10 @@ import {
   Card,
   Box,
   Skeleton,
+  Fade,
 } from "@mui/material";
 import { GridProps } from "@mui/system/Unstable_Grid";
+import { useEffect, useState } from "react";
 // cpmponents
 import CardBottom from "./CardBottom";
 import CardTop from "./CardTop";
@@ -42,7 +44,7 @@ export interface PlayerData {
   position: string;
 }
 
-type Props = React.FC<{ playerData: PlayerData, isLoading: boolean }>;
+type Props = React.FC<{ playerData: PlayerData }>;
 /** Displays the information for a single player.
  */
 const PlayerCard: Props = ({
@@ -54,11 +56,19 @@ const PlayerCard: Props = ({
     age,
     position,
   },
-  isLoading
 }) => {
+  const [isImgLoading, setIsImgLoading] = useState<boolean>(true);
   const width = 200;
   const aspectRatio = 1.62;
   const height = width * aspectRatio;
+
+  useEffect(() => {
+    const imgElem = new Image();
+    imgElem.onload = () => {
+      setIsImgLoading(false);
+    };
+    imgElem.src = pictureUrl;
+  }, []);
 
   return (
     <Card
@@ -75,12 +85,19 @@ const PlayerCard: Props = ({
       component={Box}
       raised
     >
-      {isLoading ? (
+      <Fade in={isImgLoading}>
         <Skeleton
           variant="rectangular"
-          sx={{ minWidth: width, width, maxWidth: width, height, zIndex: 100 }}
-        />
-      ) : (
+          sx={{
+            minWidth: width,
+            width,
+            maxWidth: width,
+            height,
+            position: "absolute",
+          }}
+        ></Skeleton>
+      </Fade>
+      <Fade in={!isImgLoading}>
         <img
           style={{
             marginTop: "20%",
@@ -88,11 +105,12 @@ const PlayerCard: Props = ({
             maxWidth: "120%",
             width: "120%",
             justifySelf: "center",
+            zIndex: 0,
           }}
           src={pictureUrl}
           loading="lazy"
         />
-      )}
+      </Fade>
       {/* top */}
       <CardTop
         season={season}
