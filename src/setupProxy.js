@@ -6,6 +6,9 @@ module.exports = function (app) {
     createProxyMiddleware({
       target: "https://api.sorare.com/",
       changeOrigin: true,
+      headers: {
+        "Connection":"keep-alive"
+      }
     })
   );
 };
